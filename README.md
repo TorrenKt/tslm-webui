@@ -1,5 +1,7 @@
 # TSLM WebUI
 
+![Screenshot](imgs/screenshot.png)
+
 TSLM WebUI is a Kotlin Multiplatform web interface and HTTP service for the
 [TSLM](https://github.com/TorrenKt/tslm-java) torrent-title recognition model.
 It serves a Compose for Web frontend and a Ktor API from one JVM process.
