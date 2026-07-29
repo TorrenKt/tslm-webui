@@ -1,0 +1,120 @@
+<resources>
+    <string name="app_name">TSML</string>
+    <string name="welcome_user">欢迎您，%1$s</string>
+    <string name="identity_admin">管理员</string>
+    <string name="identity_guest">游客</string>
+    <string name="token_dialog_title">设置 Token</string>
+    <string name="token_input_label">Token</string>
+    <string name="create_token">创建 Token</string>
+    <string name="email">邮箱</string>
+    <string name="created_token">Token：</string>
+    <string name="create_token_success">Token 已创建，请妥善保存</string>
+    <string name="refresh_token">刷新 Token</string>
+    <string name="refresh_token_success">Token 已刷新，请妥善保存</string>
+    <string name="recognition_records">识别记录</string>
+    <string name="recognition_called_at">识别时间：%1$s</string>
+    <string name="no_recognition_records">暂无识别记录</string>
+    <string name="view">查看</string>
+    <string name="confirm_refresh_token_title">确认刷新</string>
+    <string name="confirm_refresh_token">刷新后当前 Token 将立即失效，确认继续？</string>
+    <string name="selected_tokens">已选中 %1$d 项</string>
+    <string name="disable_token">禁用</string>
+    <string name="enable_token">启用</string>
+    <string name="delete_token">删除</string>
+    <string name="cancel_selection">取消</string>
+    <string name="confirm_delete_token_title">确认删除</string>
+    <string name="confirm_delete_token">确认删除 %1$d 个 Token 及其识别记录？</string>
+    <string name="confirm">确认</string>
+    <string name="search_email">搜索邮箱</string>
+    <string name="search">搜索</string>
+    <string name="close">关闭</string>
+    <string name="page_size">每页数量</string>
+    <string name="previous_page">上一页</string>
+    <string name="next_page">下一页</string>
+    <string name="page_status">第 %1$d / %2$d 页</string>
+    <string name="cancel">取消</string>
+    <string name="save">保存</string>
+    <string name="submit">提交</string>
+    <string name="invalid_token">无效的 token</string>
+    <string name="page_home">首页</string>
+    <string name="page_token_management">Token 管理</string>
+    <string name="token_created_at">创建：%1$s</string>
+    <string name="token_updated_at">更新：%1$s</string>
+    <string name="token_enabled">已启用</string>
+    <string name="token_disabled">已禁用</string>
+
+    <string name="tslm_other_name">Other</string>
+    <string name="tslm_other_desc">不属于其他所有类型的字符均属于此标签</string>
+
+    <string name="tslm_title_name">标题</string>
+    <string name="tslm_title_desc">标题</string>
+
+    <string name="tslm_season_name">季数</string>
+    <string name="tslm_season_desc">季数，例如“S01”、“S01-S02”、“S1”等中的数字部分</string>
+
+    <string name="tslm_episode_name">集数</string>
+    <string name="tslm_episode_desc">集数，例如“E01”、“E01-E12”、“E12.5”、“E1”等中的数字部分</string>
+
+    <string name="tslm_producer_name">发布者</string>
+    <string name="tslm_producer_desc">发布者（制作组、字幕组、压制组）名称，例如“MTeam”、“LoliHouse”等</string>
+
+    <string name="tslm_year_name">年份</string>
+    <string name="tslm_year_desc">发布年份</string>
+
+    <string name="tslm_month_name">月份</string>
+    <string name="tslm_month_desc">发布月份，例如“四月新番”中的“四”（不包括“月新番”）</string>
+
+    <string name="tslm_type_name">类型</string>
+    <string name="tslm_type_desc">类型，例如“OVA”、“SP”、“OAD”等</string>
+
+    <string name="tslm_release_state_name">发布状态</string>
+    <string name="tslm_release_state_desc">发布状态，例如“END”、“FINAL”等</string>
+
+    <string name="tslm_release_version_name">发布版本</string>
+    <string name="tslm_release_version_desc">发布版本，例如“v2”等</string>
+
+    <string name="tslm_subtitle_language_name">字幕语言</string>
+    <string name="tslm_subtitle_language_desc">字幕语言，例如“简体”、“繁简”、“简繁日”、“CHS”、“BIG5”等</string>
+
+    <string name="tslm_subtitle_format_name">字幕格式</string>
+    <string name="tslm_subtitle_format_desc">字幕格式，例如“SRT”、“ASS”</string>
+
+    <string name="tslm_subtitle_type_name">字幕加载方式</string>
+    <string name="tslm_subtitle_type_desc">字幕加载方式，例如“内封”、“内嵌”、“外挂”等</string>
+
+    <string name="tslm_file_type_name">文件格式</string>
+    <string name="tslm_file_type_desc">文件格式，例如“MP4”、“RMVB”等</string>
+
+    <string name="tslm_file_source_name">文件来源类型</string>
+    <string name="tslm_file_source_desc">文件来源类型，例如“WebRip”、“WEB-DL”、“Blue-Ray”、“BD”等</string>
+
+    <string name="tslm_file_platform_name">源平台</string>
+    <string name="tslm_file_platform_desc">源平台，例如“ADN”、“CR”、“Baha”、“B-Global”等</string>
+
+    <string name="tslm_file_video_resolution_name">视频分辨率</string>
+    <string name="tslm_file_video_resolution_desc">视频分辨率，例如“1080P”、“720P”等</string>
+
+    <string name="tslm_file_video_encodec_name">视频编码方式</string>
+    <string name="tslm_file_video_encodec_desc">视频编码方式，例如“HEVC”、“H264”等</string>
+
+    <string name="tslm_file_video_bit_name">视频色深</string>
+    <string name="tslm_file_video_bit_desc">视频色深，例如“10BIT”、“HI10”等</string>
+
+    <string name="tslm_file_video_framerate_name">视频帧率</string>
+    <string name="tslm_file_video_framerate_desc">视频帧率</string>
+
+    <string name="tslm_file_video_quality_name">视频质量</string>
+    <string name="tslm_file_video_quality_desc">视频质量，例如“HQ”、“LQ”等</string>
+
+    <string name="tslm_file_audio_encodec_name">音频编码</string>
+    <string name="tslm_file_audio_encodec_desc">音频编码，例如“ACC”、“FLAC”等</string>
+
+    <string name="tslm_file_audio_channel_name">音频轨道</string>
+    <string name="tslm_file_audio_channel_desc">音频轨道，例如“Dual Audio”等</string>
+
+    <string name="tslm_file_audio_track_name">音频频道</string>
+    <string name="tslm_file_audio_track_desc">音频频道，例如“2CH”、“5.1”、“5.1CH”、“DTS”等</string>
+
+    <string name="tslm_file_audio_feature_name">音频特性</string>
+    <string name="tslm_file_audio_feature_desc">音频增强特性或扩展技术，例如“Atoms”、“DTS:X”等</string>
+</resources>

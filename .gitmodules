@@ -1,0 +1,3 @@
+[submodule "tslm-java"]
+	path = tslm-java
+	url = git@github.com:TorrenKt/tslm-java.git

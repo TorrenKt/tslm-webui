@@ -1,0 +1,15 @@
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+.kotlin/
+kotlin-js-store/
+.DS_Store
+args.*
+tslm-server/src/jvmMain/resources/static/
