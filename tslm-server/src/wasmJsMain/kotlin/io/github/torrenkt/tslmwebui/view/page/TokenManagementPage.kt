@@ -11,9 +11,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Card
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
@@ -36,10 +40,13 @@ import io.github.torrenkt.tslmwebui.Res
 import io.github.torrenkt.tslmwebui.component.Pagination
 import io.github.torrenkt.tslmwebui.core.TslmApiClient
 import io.github.torrenkt.tslmwebui.cancel_selection
+import io.github.torrenkt.tslmwebui.clear_search
+import io.github.torrenkt.tslmwebui.copy_email
 import io.github.torrenkt.tslmwebui.create_token
 import io.github.torrenkt.tslmwebui.delete_token
 import io.github.torrenkt.tslmwebui.disable_token
 import io.github.torrenkt.tslmwebui.enable_token
+import io.github.torrenkt.tslmwebui.email_copied
 import io.github.torrenkt.tslmwebui.refresh_token
 import io.github.torrenkt.tslmwebui.search
 import io.github.torrenkt.tslmwebui.search_email
@@ -62,15 +69,20 @@ import io.ktor.client.plugins.resources.get
 import io.ktor.client.plugins.resources.post
 import io.ktor.client.request.setBody
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.await
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.getString
+import kotlinx.browser.window
+import kotlin.js.ExperimentalWasmJsInterop
 
 @Serializable
 @SerialName("tokens")
 data object TokenManagement
 
 @Composable
+@OptIn(ExperimentalWasmJsInterop::class)
 fun TokenManagementPage() {
     val snackbarHost = LocalSnackbarHostState.current
     var pageSize by rememberSaveable { mutableStateOf(10) }
@@ -188,6 +200,23 @@ fun TokenManagementPage() {
                     label = { Text(stringResource(Res.string.search_email)) },
                     modifier = Modifier.weight(1f),
                     singleLine = true,
+                    trailingIcon = {
+                        if (searchInput.isNotEmpty() || query.isNotEmpty()) {
+                            IconButton(
+                                onClick = {
+                                    searchInput = ""
+                                    query = ""
+                                    currentPage = 0
+                                    reloadVersion++
+                                },
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = stringResource(Res.string.clear_search),
+                                )
+                            }
+                        }
+                    },
                 )
                 TextButton(
                     onClick = {
@@ -276,6 +305,16 @@ fun TokenManagementPage() {
                         },
                         onEnabledChanged = { enabled ->
                             updateTokenState(setOf(token.id), enabled, clearSelection = false)
+                        },
+                        onCopyEmail = {
+                            scope.launch {
+                                try {
+                                    window.navigator.clipboard.writeText(token.email).await()
+                                    snackbarHost.showSnackbar(getString(Res.string.email_copied))
+                                } catch (e: Throwable) {
+                                    snackbarHost.showSnackbar(e.message ?: "Unknown error")
+                                }
+                            }
                         },
                         onRefresh = {
                             pendingRefreshTokenId = token.id
@@ -374,6 +413,7 @@ private fun TokenListItem(
     selectMode: Boolean,
     onSelected: () -> Unit,
     onEnabledChanged: (Boolean) -> Unit,
+    onCopyEmail: () -> Unit,
     onRefresh: () -> Unit,
     onDelete: () -> Unit,
 ) {
@@ -410,6 +450,11 @@ private fun TokenListItem(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
+                TextButton(
+                    onClick = onCopyEmail,
+                ) {
+                    Text(stringResource(Res.string.copy_email))
+                }
                 TextButton(
                     enabled = !processing && !selectMode,
                     onClick = onRefresh,

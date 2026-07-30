@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -41,11 +42,14 @@ import io.github.torrenkt.tslmwebui.core.TslmApiClient
 import io.github.torrenkt.tslmwebui.core.logger
 import io.github.torrenkt.tslmwebui.invalid_token
 import io.github.torrenkt.tslmwebui.page_home
+import io.github.torrenkt.tslmwebui.page_recognition_record
 import io.github.torrenkt.tslmwebui.page_token_management
 import io.github.torrenkt.tslmwebui.routers.AuthState
 import io.github.torrenkt.tslmwebui.view.dialog.TokenDialog
 import io.github.torrenkt.tslmwebui.view.page.Home
 import io.github.torrenkt.tslmwebui.view.page.HomePage
+import io.github.torrenkt.tslmwebui.view.page.RecognitionRecordManagement
+import io.github.torrenkt.tslmwebui.view.page.RecognitionRecordManagementPage
 import io.github.torrenkt.tslmwebui.view.page.TokenManagement
 import io.github.torrenkt.tslmwebui.view.page.TokenManagementPage
 import io.github.torrenkt.tslmwebui.welcome_user
@@ -109,6 +113,7 @@ fun App(
                     ) {
                         composable<Home> { HomePage() }
                         if (userInfo?.isAdmin == true) {
+                            composable<RecognitionRecordManagement> { RecognitionRecordManagementPage() }
                             composable<TokenManagement> { TokenManagementPage() }
                         }
                     }
@@ -125,6 +130,14 @@ fun App(
                     onClick = { navController.navigate(Home) { launchSingleTop = true } },
                     icon = { Icon(Icons.Default.Home, null) },
                     label = { Text(stringResource(Res.string.page_home)) },
+                )
+                item(
+                    selected = currentDestination?.hasRoute<RecognitionRecordManagement>() == true,
+                    onClick = {
+                        navController.navigate(RecognitionRecordManagement) { launchSingleTop = true }
+                    },
+                    icon = { Icon(Icons.Default.History, null) },
+                    label = { Text(stringResource(Res.string.page_recognition_record)) },
                 )
                 item(
                     selected = currentDestination?.hasRoute<TokenManagement>() == true,

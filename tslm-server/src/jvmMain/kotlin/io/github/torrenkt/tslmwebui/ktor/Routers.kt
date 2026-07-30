@@ -5,6 +5,7 @@ import io.github.torrenkt.tslmwebui.routers.authState
 import io.github.torrenkt.tslmwebui.routers.createToken
 import io.github.torrenkt.tslmwebui.routers.deleteToken
 import io.github.torrenkt.tslmwebui.routers.listToken
+import io.github.torrenkt.tslmwebui.routers.listAllRecognitionRecord
 import io.github.torrenkt.tslmwebui.routers.listRecognitionRecord
 import io.github.torrenkt.tslmwebui.routers.refreshToken
 import io.github.torrenkt.tslmwebui.routers.tokenState
@@ -25,6 +26,7 @@ fun Route.routers(publicInstance: Boolean) {
     deleteToken()
     refreshToken()
     listToken()
+    listAllRecognitionRecord()
     listRecognitionRecord()
     tokenState()
 }

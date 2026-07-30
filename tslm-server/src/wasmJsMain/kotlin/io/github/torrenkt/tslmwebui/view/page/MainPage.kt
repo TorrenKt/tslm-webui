@@ -1,10 +1,12 @@
 package io.github.torrenkt.tslmwebui.view.page
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Card
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -143,46 +145,57 @@ fun HomePage() {
             Text(stringResource(Res.string.submit))
         }
         if (canViewHistory) {
-            Text(
-                text = stringResource(Res.string.recognition_records),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 24.dp, bottom = 8.dp),
-            )
-            if (history.isEmpty() && historyTotalPage == 0L) {
-                Text(stringResource(Res.string.no_recognition_records))
-            } else {
-                Pagination(
-                    list = history,
-                    totalPage = historyTotalPage,
-                    currentPage = historyPageIndex,
-                    pageSize = historyPageSize,
-                    pagingChanged = { pageSize, pageIndex ->
-                        historyPageSize = pageSize
-                        historyPageIndex = pageIndex
-                    },
-                    itemContent = { record ->
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 4.dp),
-                        ) {
-                            Column(modifier = Modifier.padding(12.dp)) {
-                                Text(record.title)
-                                Text(stringResource(Res.string.recognition_called_at, record.calledAt))
-                                TextButton(
-                                    onClick = {
-                                        value = record.title
-                                        labels = record.result
-                                    },
+            Box(
+                modifier = Modifier.fillMaxWidth().weight(1f),
+                contentAlignment = Alignment.TopCenter,
+            ) {
+                Column(
+                    modifier = Modifier
+                        .widthIn(max = 680.dp)
+                        .fillMaxSize(),
+                ) {
+                    Text(
+                        text = stringResource(Res.string.recognition_records),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 24.dp, bottom = 8.dp),
+                    )
+                    if (history.isEmpty() && historyTotalPage == 0L) {
+                        Text(stringResource(Res.string.no_recognition_records))
+                    } else {
+                        Pagination(
+                            list = history,
+                            totalPage = historyTotalPage,
+                            currentPage = historyPageIndex,
+                            pageSize = historyPageSize,
+                            pagingChanged = { pageSize, pageIndex ->
+                                historyPageSize = pageSize
+                                historyPageIndex = pageIndex
+                            },
+                            itemContent = { record ->
+                                Card(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 4.dp),
                                 ) {
-                                    Text(stringResource(Res.string.view))
+                                    Column(modifier = Modifier.padding(12.dp)) {
+                                        Text(record.title)
+                                        Text(stringResource(Res.string.recognition_called_at, record.calledAt))
+                                        TextButton(
+                                            onClick = {
+                                                value = record.title
+                                                labels = record.result
+                                            },
+                                        ) {
+                                            Text(stringResource(Res.string.view))
+                                        }
+                                    }
                                 }
-                            }
-                        }
-                    },
-                    modifier = Modifier.fillMaxWidth().weight(1f),
-                )
+                            },
+                            modifier = Modifier.fillMaxWidth().weight(1f),
+                        )
+                    }
+                }
             }
         }
     }
