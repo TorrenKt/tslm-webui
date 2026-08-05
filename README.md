@@ -85,12 +85,11 @@ services:
       - "2156:2156"
     restart: always
     volumes:
-      - /path/to/model:/models:ro
-      - ./data/webui/nv-cache:/root/.nv/ComputeCache
+      - ./data/model:/app/model:ro
+      - ./data/nv-cache:/root/.nv/ComputeCache
     environment:
       TSLM_WEBUI_PORT: "2156"
       TSLM_WEBUI_PUBLIC_INSTANCE: "true"
-      TSLM_WEBUI_MODEL_FILE: /models/tslm-b-fp16.onnx
       TSLM_WEBUI_USE_CUDA: "true"
     deploy:
       resources:
@@ -101,9 +100,8 @@ services:
               count: 1
 ```
 
-Replace `/path/to/model` and `tslm-b-fp16.onnx` with the host model directory
-and filename. The `nv-cache` mount persists the CUDA driver JIT cache generated
-during model preheating and is recommended for faster subsequent starts.
+The `nv-cache` mount persists the CUDA driver JIT cache generated during model
+preheating and is recommended for faster subsequent starts.
 
 Start the service:
 

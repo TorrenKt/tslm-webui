@@ -12,4 +12,4 @@ out/
 kotlin-js-store/
 .DS_Store
 args.*
-tslm-server/src/jvmMain/resources/static/
+tslm-server/model/

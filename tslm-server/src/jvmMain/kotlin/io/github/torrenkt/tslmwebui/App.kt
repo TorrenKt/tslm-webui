@@ -63,12 +63,20 @@ object App: SuspendingCliktCommand() {
         .boolean()
         .default(true)
 
-    val model: File by option("--model-file", envvar = "TSLM_WEBUI_MODEL_FILE")
+    val localModel: File? by option("--model-file", envvar = "TSLM_WEBUI_MODEL_FILE")
         .file(mustExist = true, canBeDir = false, mustBeReadable = true)
-        .required()
+    val modelPath: File by option("--model-path", envvar = "TSLM_WEBUI_MODEL_PATH")
+        .file(mustExist = true, canBeDir = false, mustBeReadable = true)
+        .default(TSLM.defaultCacheDir())
+    private val onlineModel: File by lazy {
+        TSLM.downloadFromHuggingFace(
+            useCuda = useCuda,
+            cacheDir = modelPath,
+        )
+    }
 
     val modelHash: String by lazy {
-        model.sha256()
+        (localModel ?: onlineModel).sha256()
     }
 
     override suspend fun run() {
@@ -105,10 +113,15 @@ object App: SuspendingCliktCommand() {
             }
         }
 
+        if (localModel == null) {
+            log.info { "model file not exists, downloading..." }
+            onlineModel
+        }
+
         log.info { "Loading TSLM model..." }
         val tslm = TSLM(
             useCuda = useCuda,
-            modelPath = model,
+            modelPath = localModel ?: onlineModel,
         )
         log.info { "Preheating TSLM model..." }
         tslm("test")

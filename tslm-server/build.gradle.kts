@@ -153,8 +153,8 @@ tasks {
         group = "docker"
         from(Dockerfile.From("azul/zulu-openjdk:21").withStage("builder"))
         workingDir("/workspace")
-        copyFile(".", ".")
         runCommand("apt-get update && apt-get install libatomic1")
+        copyFile(".", ".")
         runCommand("./gradlew :tslm-server:installJvmDist --no-daemon")
 
         from("nvidia/cuda:12.9.0-cudnn-runtime-ubuntu24.04")
