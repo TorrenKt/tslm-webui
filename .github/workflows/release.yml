@@ -22,6 +22,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          submodules: recursive
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -36,10 +37,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Push Docker image
+        run: ./gradlew :tslm-server:pushDockerImage --no-daemon
+
       - name: Create GitHub release
         run: ./gradlew :tslm-server:createGitHubRelease --no-daemon
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Push Docker image
-        run: ./gradlew :tslm-server:pushDockerImage --no-daemon
