@@ -91,6 +91,7 @@ services:
       TSLM_WEBUI_PORT: "2156"
       TSLM_WEBUI_PUBLIC_INSTANCE: "true"
       TSLM_WEBUI_USE_CUDA: "true"
+      TSLM_WEBUI_FLAVOR: "TSLM_B" # or TSLM_C
     deploy:
       resources:
         reservations:

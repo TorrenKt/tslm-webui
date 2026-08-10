@@ -4,12 +4,15 @@ import com.github.ajalt.clikt.command.SuspendingCliktCommand
 import com.github.ajalt.clikt.command.main
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
-import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.validate
 import com.github.ajalt.clikt.parameters.types.boolean
+import com.github.ajalt.clikt.parameters.types.enum
 import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.int
-import io.github.torrenkt.tslm.TSLM
+import io.github.torrenkt.tslm.TslmFlavor
+import io.github.torrenkt.tslm.defaultModelCacheDir
+import io.github.torrenkt.tslm.downloadFromHuggingFace
+import io.github.torrenkt.tslm.tslmInstance
 import io.github.torrenkt.tslmwebui.core.logger
 import io.github.torrenkt.tslmwebui.database.connectPostgreSql
 import io.github.torrenkt.tslmwebui.database.setupDatabase
@@ -62,14 +65,18 @@ object App: SuspendingCliktCommand() {
     val useCuda: Boolean by option("--use-cuda", envvar = "TSLM_WEBUI_USE_CUDA")
         .boolean()
         .default(true)
+    val flavor: TslmFlavor by option("--flavor", envvar = "TSLM_WEBUI_FLAVOR")
+        .enum<TslmFlavor>()
+        .default(TslmFlavor.TSLM_B)
 
     val localModel: File? by option("--model-file", envvar = "TSLM_WEBUI_MODEL_FILE")
         .file(mustExist = true, canBeDir = false, mustBeReadable = true)
     val modelPath: File by option("--model-path", envvar = "TSLM_WEBUI_MODEL_PATH")
         .file(mustExist = true, canBeDir = false, mustBeReadable = true)
-        .default(TSLM.defaultCacheDir())
+        .default(defaultModelCacheDir())
     private val onlineModel: File by lazy {
-        TSLM.downloadFromHuggingFace(
+        downloadFromHuggingFace(
+            flavor = flavor,
             useCuda = useCuda,
             cacheDir = modelPath,
         )
@@ -118,15 +125,6 @@ object App: SuspendingCliktCommand() {
             onlineModel
         }
 
-        log.info { "Loading TSLM model..." }
-        val tslm = TSLM(
-            useCuda = useCuda,
-            modelPath = localModel ?: onlineModel,
-        )
-        log.info { "Preheating TSLM model..." }
-        tslm("test")
-        log.info { "TslmWebUI started" }
-
         embeddedServer(CIO, port = port) {
             if (!publicInstance) {
                 install(Authentication) {
@@ -136,7 +134,17 @@ object App: SuspendingCliktCommand() {
             install(Koin) {
                 modules(
                     module {
-                        single { tslm }
+                        single(createdAtStart = true) {
+                            log.info { "Loading TSLM model..." }
+                            val tslm = tslmInstance(
+                                useCuda = useCuda,
+                                modelPath = localModel ?: onlineModel,
+                                flavor = flavor,
+                            )
+                            log.info { "Preheating TSLM model..." }
+                            tslm("test")
+                            log.info { "TslmWebUI started" }
+                        }
                     },
                 )
             }
