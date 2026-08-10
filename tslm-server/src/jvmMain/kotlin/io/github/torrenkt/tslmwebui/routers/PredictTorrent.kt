@@ -1,6 +1,6 @@
 package io.github.torrenkt.tslmwebui.routers
 
-import io.github.torrenkt.tslm.TSLM
+import io.github.torrenkt.tslm.Tslm
 import io.github.torrenkt.tslm.normalizeWith
 import io.github.torrenkt.tslmwebui.App
 import io.github.torrenkt.tslmwebui.core.logger
@@ -21,7 +21,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.suspendTransaction
 private val log by logger("PredictTorrent")
 
 fun Route.predictTorrent() {
-    val tslm by inject<TSLM>()
+    val tslm by inject<Tslm>()
     post<PredictTorrent> {
         val req = try {
             call.receive<PredictTorrent.Req>()
