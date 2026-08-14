@@ -9,6 +9,7 @@ import com.github.ajalt.clikt.parameters.types.boolean
 import com.github.ajalt.clikt.parameters.types.enum
 import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.int
+import io.github.torrenkt.tslm.Tslm
 import io.github.torrenkt.tslm.TslmFlavor
 import io.github.torrenkt.tslm.defaultModelCacheDir
 import io.github.torrenkt.tslm.downloadFromHuggingFace
@@ -134,16 +135,17 @@ object App: SuspendingCliktCommand() {
             install(Koin) {
                 modules(
                     module {
-                        single(createdAtStart = true) {
+                        single<Tslm>(createdAtStart = true) {
                             log.info { "Loading TSLM model..." }
-                            val tslm = tslmInstance(
+                            tslmInstance(
                                 useCuda = useCuda,
                                 modelPath = localModel ?: onlineModel,
                                 flavor = flavor,
-                            )
-                            log.info { "Preheating TSLM model..." }
-                            tslm("test")
-                            log.info { "TslmWebUI started" }
+                            ).also { tslm ->
+                                log.info { "Preheating TSLM model..." }
+                                tslm("test")
+                                log.info { "TslmWebUI started" }
+                            }
                         }
                     },
                 )
