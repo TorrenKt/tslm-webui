@@ -127,7 +127,7 @@ tasks {
         )
     }
 
-    fun Dockerfile.installZulu21() {
+    fun Dockerfile.installZulu25() {
         runCommand(
             "apt-get update && " +
                 "apt-get install -y --no-install-recommends ca-certificates curl gnupg && " +
@@ -136,7 +136,7 @@ tasks {
                 "echo 'deb [signed-by=/usr/share/keyrings/azul.gpg] https://repos.azul.com/zulu/deb stable main' " +
                 "> /etc/apt/sources.list.d/zulu.list && " +
                 "apt-get update && " +
-                "apt-get install -y --no-install-recommends zulu21-jdk && " +
+                "apt-get install -y --no-install-recommends zulu25-jdk && " +
                 "rm -rf /var/lib/apt/lists/*",
         )
     }
@@ -151,14 +151,14 @@ tasks {
 
     val createDockerfile = register<Dockerfile>("createDockerfile") {
         group = "docker"
-        from(Dockerfile.From("azul/zulu-openjdk:21").withStage("builder"))
+        from(Dockerfile.From("azul/zulu-openjdk:25").withStage("builder"))
         workingDir("/workspace")
         runCommand("apt-get update && apt-get install libatomic1")
         copyFile(".", ".")
         runCommand("./gradlew :tslm-server:installJvmDist --no-daemon")
 
         from("nvidia/cuda:12.9.0-cudnn-runtime-ubuntu24.04")
-        installZulu21()
+        installZulu25()
         workingDir("/app")
         copyFile(
             Dockerfile.CopyFile(
@@ -289,7 +289,7 @@ tasks {
         dependsOn("installJvmDist")
         destFile.set(layout.buildDirectory.file("docker/Dockerfile.dev"))
         from("nvidia/cuda:12.9.0-cudnn-runtime-ubuntu24.04")
-        installZulu21()
+        installZulu25()
         workingDir("/app")
         copyFile("tslm-server/build/install/tslm-server-jvm", "/app")
         exposePort(2156)
@@ -301,6 +301,6 @@ tasks {
         dependsOn(createDevDockerfile)
         inputDir.set(rootProject.layout.projectDirectory)
         dockerFile.set(createDevDockerfile.flatMap { it.destFile })
-        images.add("mhmzx/tslm-webui:dev")
+        images.add("ghcr.io/torrenkt/tslm-webui:v1-dev")
     }
 }
